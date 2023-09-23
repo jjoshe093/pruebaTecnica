@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <h:outputStylesheet library="css" name="default.css"/>
+        <h:outputStylesheet library="css" name="cssLayout.css"/>
+        <h:outputStylesheet library="primefaces" name="primeicons/primeicons.css"/>
+        <title>Productos</title>
+    </h:head>
+
+    <h:body>
+        <div id="top" >
+            <table width="100%">
+                <tr>
+                    <td>
+                        <h:graphicImage value="/resources/productos.png" width="50px" height="50px" />
+                    </td>
+                    <td width="95%">
+                        <h1>Administración de productos</h1>
+                        <div id="userInfo">
+                            <p:outputLabel value="Bienvenido"/>
+                            <h:form>
+                                <p:commandLink style="color: #D20005" value="Cerrar Sesión"/>
+                            </h:form>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div>
+            <div id="left">
+                <h:form>
+                    <ui:include src="../templates/menu.xhtml"/>
+                </h:form>
+            </div>
+            <div id="content" class="left_content">
+                <div id="titleContent" >
+                    <ui:insert name="titleContent">Titulo</ui:insert>
+                </div>
+                <ui:insert name="content">Contenido
+                </ui:insert>
+            </div>
+        </div>
+        <div id="bottom">
+            Todos los derechos reservados, 2023
+        </div>
+    </h:body>
+
+</html>

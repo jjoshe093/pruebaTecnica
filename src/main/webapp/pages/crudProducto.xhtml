@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:body>
+
+        <ui:composition template="./../templates/template.xhtml">
+
+            <ui:define name="titleContent">
+                <h:form>
+
+                </h:form>
+            </ui:define>
+
+            <ui:define name="content">
+                <h:form id="productoForm">
+
+                    <p:commandButton value="Agregar" icon="pi pi-plus" actionListener="#{productoController.abrirNuevo}"
+                                     update=":productoForm:productoDetalle" oncomplete="PF('productoDetalleDialog').show()"
+                                     styleClass="ui-button-success" style="margin-right: .5rem">
+                        <p:resetInput target=":productoForm:productoDetalle"/>
+                    </p:commandButton>
+
+                    <p:dataTable id="productoTable" var="producto" value="#{productoController.productos}"
+                                 selection="#{productoController.productoSeleccionado}" rowKey="#{producto.idProducto}" paginator="true"
+                                 rows="10" rowSelectMode="add" paginatorPosition="bottom">
+
+                        <f:facet name="header">
+                            <div id="headerProductoTable">
+                                <span style="font-weight: bold">Productos</span>
+
+                                <!--                                <span class="filter-container ui-input-icon-left">
+                                                                    <i class="pi pi-search"></i>
+                                                                                                <p:inputText id="globalFilter" onkeyup="PF('dtProducts').filter()" placeholder="Search"/>
+                                                                </span>-->
+
+                            </div>
+                        </f:facet>
+
+                        <p:column headerText="ID" width="0.1%">
+                            <h:outputText value="#{producto.idProducto}"/>
+                        </p:column>
+                        <p:column headerText="Nombre" width="5%">
+                            <h:outputText value="#{producto.nombre}"/>
+                        </p:column>
+                        <p:column headerText="Descripción" width="20%">
+                            <h:outputText value="#{producto.descripcion}"/>
+                        </p:column>
+                        <p:column headerText="Precio" width="2%">
+                            <h:outputText value="#{producto.precio}"/>
+                        </p:column>
+
+                        <p:column headerText="Acciones" exportable="false" width="2.2%">
+                            <p:commandButton icon="pi pi-pencil" update=":productoForm:productoDetalle"
+                                             oncomplete="PF('productoDetalleDialog').show()"
+                                             styleClass="edit-button rounded-button ui-button-success" process="@this">
+                                <f:setPropertyActionListener value="#{producto}" target="#{productoController.productoSeleccionado}"/>
+                                <p:resetInput target=":productoForm:productoDetalle"/>
+                            </p:commandButton>
+                            <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash" process="@this"
+                                             oncomplete="PF('deleteProductoDialog').show()">
+                                <f:setPropertyActionListener value="#{producto}" target="#{productoController.productoSeleccionado}"/>
+                            </p:commandButton>
+                        </p:column>
+
+                    </p:dataTable>
+                    <div id="productoDetalleDialog" style="width: 40%;">
+                        <p:dialog header="Información del Producto" showEffect="fade" modal="true"
+                                  widgetVar="productoDetalleDialog" responsive="true">
+                            <p:outputPanel id="productoDetalle" class="ui-fluid">
+                                <p:outputPanel  rendered="#{not empty productoController.productoSeleccionado}">
+                                    <div class="p-field">
+                                        <p:outputLabel for="nombre">Nombre *</p:outputLabel>
+                                        <p:inputText id="nombre" value="#{productoController.productoSeleccionado.nombre}" />
+                                    </div>
+                                    <div class="p-field">
+                                        <p:outputLabel for="descripcion">Descripción *</p:outputLabel>
+                                        <p:inputText id="descripcion" value="#{productoController.productoSeleccionado.descripcion}" />
+                                    </div>
+                                    <div class="p-field">
+                                        <p:outputLabel for="precio">Precio *</p:outputLabel>
+                                        <p:inputText id="precio" value="#{productoController.productoSeleccionado.precio}"/>
+                                    </div>
+                                    <div class="p-field">
+                                        <p:outputLabel>* campos requeridos</p:outputLabel>
+                                    </div>
+                                </p:outputPanel>
+                            </p:outputPanel>
+
+                            <f:facet name="footer">
+                                <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{productoController.guardarProducto()}"
+                                                 update="productoDetalle" process="productoDetalle @this"/>
+                                <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('productoDetalleDialog').hide()"
+                                                 />
+                            </f:facet>
+                        </p:dialog>
+
+                        <p:confirmDialog widgetVar="deleteProductoDialog" showEffect="fade" width="300"
+                                         message="¿Eliminar producto?" header="Confirmación" severity="info">
+                            <p:commandButton value="Si" icon="pi pi-check" actionListener="#{productoController.eliminarProducto()}"
+                                             process="@this" oncomplete="PF('deleteProductoDialog').hide()"/>
+                            <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                                             onclick="PF('deleteProductoDialog').hide()"/>
+                        </p:confirmDialog>
+
+                    </div>
+
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
